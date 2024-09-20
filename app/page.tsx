@@ -1,5 +1,5 @@
 
-import React, { use } from "react";
+import React from "react";
 
 
 export default function HomePage() {
@@ -51,11 +51,11 @@ export default function HomePage() {
         <section id="section1">
           <h2 className="text-3xl font-semibold text-gray-800">iirda:The best event management company in kerala</h2>
           <p className="mt-4 text-gray-600">
-            Welcome to Iirda, your trusted partner in creating extraordinary events. Whether you're envisioning a grand corporate gathering, a magical wedding celebration, or a personalized gathering, we're here to turn your dreams into reality.
+            Welcome to Iirda, your trusted partner in creating extraordinary events. Whether you are envisioning a grand corporate gathering, a magical wedding celebration, or a personalized gathering, we are here to turn your dreams into reality.
 
-            With our expertise and passion for event planning, we'll work closely with you to design and execute events that exceed your expectations. From venue selection and decor to entertainment and catering, we handle every detail with precision and care.
+            With our expertise and passion for event planning, we wll work closely with you to design and execute events that exceed your expectations. From venue selection and decor to entertainment and catering, we handle every detail with precision and care.
 
-            Experience the Iirda difference. Let's create unforgettable memories together
+            Experience the Iirda difference. Let us create unforgettable memories together
           </p>
         </section>
         <section id="section2">
@@ -107,7 +107,7 @@ export default function HomePage() {
         <section id="section3">
           <h2 className="text-3xl font-semibold text-gray-800">Seamless Execution</h2>
           <p className="mt-4 text-gray-600">
-            Get in touch with us through various contact methods listed below. We'd love to hear from you!
+            Get in touch with us through various contact methods listed below. We would love to hear from you!
           </p>
         </section>
       </div>

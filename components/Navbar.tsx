@@ -12,7 +12,6 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { Button } from "@/components/ui/button"
 
@@ -20,7 +19,7 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
 
   return (
-    <header className="absolute top-0 left-0 w-full z-50 bg-transparent ">
+    <header className="absolute top-0 left-0 w-full z-50 bg-transparent">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center space-x-2">
@@ -31,22 +30,26 @@ export default function Navbar() {
           <NavigationMenu className="hidden md:flex">
             <NavigationMenuList className="space-x-1">
               <NavItem href="/" className="text-white">Home</NavItem>
-              <NavItemWithDropdown trigger="Services" >
-                <DropdownContent title="Services">
-                  <ListItem href="/services/corporate-event-management" title="Corporate" >
+              <NavItemWithDropdown trigger="Services">
+                <DropdownContent>
+                  <ListItem href="/services/corporate-event-management" title="Corporate">
                     Corporate event management
                   </ListItem>
                   <ListItem href="/products/wedding" title="Wedding">
                     Wedding planner
                   </ListItem>
-                  <ListItem href="/services/music-entertainments" >Music and entertainmets </ListItem>
-                  <ListItem href="/services/private-parties">Private parties</ListItem>
+                  <ListItem href="/services/music-entertainments" title="Music and Entertainment">
+                    Music and entertainments
+                  </ListItem>
+                  <ListItem href="/services/private-parties" title="Private Parties">
+                    Private parties
+                  </ListItem>
                 </DropdownContent>
               </NavItemWithDropdown>
 
-              <NavItemWithDropdown trigger="About" >
-                <DropdownContent title="About">
-                  <ListItem href="/about/stories" title="Stories" >
+              <NavItemWithDropdown trigger="About">
+                <DropdownContent>
+                  <ListItem href="/about/stories" title="Stories">
                     Story of iirda
                   </ListItem>
                   <ListItem href="/products/photos" title="Photo">
@@ -83,15 +86,15 @@ export default function Navbar() {
               <MobileNavItemWithDropdown title="Services">
                 <MobileDropdownItem href="/products/corporate-event-management" className="text-white">Corporate events</MobileDropdownItem>
                 <MobileDropdownItem href="/services/wedding-planner" className="text-white">Wedding planner</MobileDropdownItem>
-                <MobileDropdownItem href="/services/music-entertainments" className="text-white">Music and entertainmets</MobileDropdownItem>
+                <MobileDropdownItem href="/services/music-entertainments" className="text-white">Music and entertainments</MobileDropdownItem>
                 <MobileDropdownItem href="/services/private-parties" className="text-white">Private parties</MobileDropdownItem>
               </MobileNavItemWithDropdown>
 
-              <MobileNavItemWithDropdown title="About" >
+              <MobileNavItemWithDropdown title="About">
                 <MobileDropdownItem href="/about/stories" className="text-white">Story of iirda</MobileDropdownItem>
                 <MobileDropdownItem href="/services/photos" className="text-white">Photo Gallery</MobileDropdownItem>
               </MobileNavItemWithDropdown>
-              <MobileNavItem href="/" className="text-white">+91-8304050894</MobileNavItem>
+              <MobileNavItem href="tel:+918304050894" className="text-white">+91-8304050894</MobileNavItem>
               <MobileNavItem href="/partner" className="text-white">Working partner</MobileNavItem>
             </div>
           </nav>
@@ -101,15 +104,7 @@ export default function Navbar() {
   )
 }
 
-function NavItem({
-  href,
-  className = "",
-  children,
-}: {
-  href: string;
-  className?: string;
-  children: React.ReactNode;
-}) {
+function NavItem({ href, className = "", children }: { href: string; className?: string; children: React.ReactNode }) {
   return (
     <Link
       href={href}
@@ -123,7 +118,6 @@ function NavItem({
 function NavItemWithDropdown({ trigger, children }: { trigger: string; children: React.ReactNode }) {
   return (
     <NavigationMenuItem>
-      {/* Set text to white initially */}
       <NavigationMenuTrigger className="text-white">
         {trigger}
       </NavigationMenuTrigger>
@@ -134,8 +128,7 @@ function NavItemWithDropdown({ trigger, children }: { trigger: string; children:
   );
 }
 
-
-function DropdownContent({ title, children }: { title: string; children: React.ReactNode }) {
+function DropdownContent({ children }: { children: React.ReactNode }) {
   return (
     <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
       {children}
@@ -166,15 +159,7 @@ const ListItem = React.forwardRef<
 })
 ListItem.displayName = "ListItem"
 
-function MobileNavItem({
-  href,
-  className = "",
-  children,
-}: {
-  href: string;
-  className?: string;
-  children: React.ReactNode;
-}) {
+function MobileNavItem({ href, className = "", children }: { href: string; className?: string; children: React.ReactNode }) {
   return (
     <Link
       href={href}
@@ -191,12 +176,12 @@ function MobileNavItemWithDropdown({ title, children }: { title: string; childre
   return (
     <div>
       <button
-        className="flex justify-between items-center w-full py-2 text-base font-medium text-white hover:text-yellow-400" // White text initially, yellow on hover
+        className="flex justify-between items-center w-full py-2 text-base font-medium text-white hover:text-yellow-400"
         onClick={() => setIsOpen(!isOpen)}
       >
         {title}
         <svg
-          className={`h-5 w-5 transform ${isOpen ? 'rotate-180' : ''} text-white hover:text-yellow-400`} // White icon initially, yellow on hover
+          className={`h-5 w-5 transform ${isOpen ? 'rotate-180' : ''} text-white hover:text-yellow-400`}
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
@@ -214,16 +199,7 @@ function MobileNavItemWithDropdown({ title, children }: { title: string; childre
   );
 }
 
-
-function MobileDropdownItem({
-  href,
-  className = "",
-  children,
-}: {
-  href: string;
-  className?: string;
-  children: React.ReactNode;
-}) {
+function MobileDropdownItem({ href, className = "", children }: { href: string; className?: string; children: React.ReactNode }) {
   return (
     <Link
       href={href}

@@ -1,4 +1,3 @@
-// app/page.tsx
 'use client'
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';  // Importing the utility function from utils.ts
@@ -16,46 +15,39 @@ type TableData = {
 const Home: React.FC = () => {
   const [isNavbarOpen, setIsNavbarOpen] = useState<boolean>(false);
   const [tableData, setTableData] = useState<TableData[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [error, setError] = useState<String | null>(null);
-  const router = useRouter()
-  const { data: session, status } = useSession()
-  useEffect(() => {
-    if (status === 'authenticated') {
-      router.push('/partner/dashboard');
-    }
-  }, [session, status, router]);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false); 
+  const [error, setError] = useState<string | null>(null);
 
+  const { data: session, status } = useSession();  // Get the session
+  const router = useRouter();  // Use useRouter correctly
 
   useEffect(() => {
-
     const fetchTable = async () => {
       try {
         const res = await fetch('/api/leaderBoard');
         if (!res.ok) {
           throw new Error('Failed to fetch user data');
-
         }
         const data = await res.json();
         setTableData(data);
       } catch (error: any) {
         setError(error.message);
       }
-    }
-    fetchTable()
+    };
+    fetchTable();
   }, []);
 
+  // Redirect to partner page if the user is authenticated
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.push('/partner/dashboard');
+    }
+  }, [session, status, router]);
+
+  // Handle login modal
   const handleLogin = () => {
-    setIsModalOpen(true)
-  }
-  // useEffect(() => {
-  //   // Fetch table data from API
-  //   axios.get<TableData[]>('https://api.example.com/data') // Replace with your actual API
-  //     .then((response) => {
-  //       setTableData(response.data);
-  //     })
-  //     .catch((error) => console.error("Error fetching data:", error));
-  // }, []);
+    setIsModalOpen(true);
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -75,15 +67,16 @@ const Home: React.FC = () => {
               isNavbarOpen ? "block" : "hidden"
             )}
           >
-            <li>
-              {/* Login Button */}
-              <Button
-                onClick={handleLogin}  // Open modal on click
-                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
-              >
-                Login
-              </Button>
-            </li>
+            {!session && (
+              <li>
+                <Button
+                  onClick={handleLogin}  // Open modal on click
+                  className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+                >
+                  Login
+                </Button>
+              </li>
+            )}
             <li><a href="tel:+91-8304050894" className="text-white">Contact</a></li>
             <li><a href="/" className="text-white">Exit</a></li>
           </ul>
@@ -96,7 +89,7 @@ const Home: React.FC = () => {
         <div className="md:w-1/2 md:order-2 mb-4 md:mb-0">
           <h2 className="text-xl font-bold">Description</h2>
           <p className="text-gray-600">
-            This is a small paragraph providing some information about the page content.
+            This is a small paragraph providing some information about the page content. 
             The table with data is on the left side in larger screens, but it will move below on smaller devices.
           </p>
         </div>
@@ -124,9 +117,11 @@ const Home: React.FC = () => {
           </table>
         </div>
       </div>
+
+      {/* Login Modal */}
       <LoginModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
-}
+};
 
 export default Home;

@@ -35,17 +35,17 @@ const Footer = () => {
         {/* Contact Info */}
         <div className="mb-6">
           <p className="text-gray-700 text-lg md:text-base">
-            <strong>Mobile:</strong> +123-456-7890
+            <strong>Mobile:</strong> +91-8304050894
           </p>
           <p className="text-gray-700 text-lg md:text-base">
-            <strong>Email:</strong> <a href="mailto:youremail@example.com" className="text-blue-500">iirdaevents@gmail.com</a>
+            <strong>Email:</strong> <a href="mailto:iirdaevents@gmail.com" className="text-blue-500">iirdaevents@gmail.com</a>
           </p>
         </div>
 
         {/* Address */}
         <div className="mb-6">
           <p className="text-gray-700 text-lg md:text-base">
-            <strong>Address:</strong> Manjeri,Malappuram,Kerala
+            <strong>Address:</strong> Manjeri,Malappuram,Kerala,676126
           </p>
         </div>
 

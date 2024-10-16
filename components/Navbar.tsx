@@ -4,6 +4,7 @@ import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Menu, X } from "lucide-react"
+import { usePathname } from "next/navigation"
 
 import {
   NavigationMenu,
@@ -17,7 +18,7 @@ import { Button } from "@/components/ui/button"
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
-
+  if (usePathname().startsWith('/partner')) return null
   return (
     <header className="absolute top-0 left-0 w-full z-50 bg-transparent">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -70,7 +71,7 @@ export default function Navbar() {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? (
-              <X className="h-6 w-6" />
+              <X className="h-6 w-6" /> 
             ) : (
               <Menu className="h-6 w-6" />
             )}

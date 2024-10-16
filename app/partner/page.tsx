@@ -1,119 +1,132 @@
-"use client";
+// app/page.tsx
+'use client'
+import { useEffect, useState } from 'react';
+import { cn } from '@/lib/utils';  // Importing the utility function from utils.ts
+import { Button } from '@/components/ui/button'; // Example Shadcn Button component
+import LoginModal from '@/components/LoginModal';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
-import React, { useState } from "react";
-
-const WorkingPartnerForm = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    aadharNumber: "",
-    idProof: null,
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, files } = e.target;
-    if (name === "idProof" && files) {
-      setFormData({ ...formData, [name]: files[0] });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    // You can handle form submission here (e.g., send data to a backend API)
-    console.log(formData);
-    
-    // Reset form after submission (optional)
-    setFormData({
-      name: "",
-      email: "",
-      aadharNumber: "",
-      idProof: null,
-    });
-  };
-
-  return (
-    <div className="max-w-lg mx-auto py-8 ">
-      <h1 className="text-2xl font-semibold mb-4">Working Partner Signup</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Name */}
-        <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-            Name
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-            required
-          />
-        </div>
-
-        {/* Email */}
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-            required
-          />
-        </div>
-
-        {/* Aadhaar Number */}
-        <div>
-          <label htmlFor="aadharNumber" className="block text-sm font-medium text-gray-700">
-            Aadhaar Number
-          </label>
-          <input
-            type="text"
-            id="aadharNumber"
-            name="aadharNumber"
-            value={formData.aadharNumber}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-            required
-          />
-        </div>
-
-        {/* ID Proof Image */}
-        <div>
-          <label htmlFor="idProof" className="block text-sm font-medium text-gray-700">
-            Upload ID Proof
-          </label>
-          <input
-            type="file"
-            id="idProof"
-            name="idProof"
-            accept="image/*"
-            onChange={handleChange}
-            className="mt-1 block w-full text-gray-900 border border-gray-300 rounded-md shadow-sm p-2"
-            required
-          />
-        </div>
-
-        {/* Submit Button */}
-        <div>
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
-          >
-            Sign Up
-          </button>
-        </div>
-      </form>
-    </div>
-  );
+type TableData = {
+  rank: number;
+  name: string;
+  points: number;
 };
 
-export default WorkingPartnerForm;
+const Home: React.FC = () => {
+  const [isNavbarOpen, setIsNavbarOpen] = useState<boolean>(false);
+  const [tableData, setTableData] = useState<TableData[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [error, setError] = useState<String | null>(null);
+  const router = useRouter()
+  const { data: session, status } = useSession()
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.push('/partner/dashboard');
+    }
+  }, [session, status, router]);
+
+
+  useEffect(() => {
+
+    const fetchTable = async () => {
+      try {
+        const res = await fetch('/api/leaderBoard');
+        if (!res.ok) {
+          throw new Error('Failed to fetch user data');
+
+        }
+        const data = await res.json();
+        setTableData(data);
+      } catch (error: any) {
+        setError(error.message);
+      }
+    }
+    fetchTable()
+  }, []);
+
+  const handleLogin = () => {
+    setIsModalOpen(true)
+  }
+  // useEffect(() => {
+  //   // Fetch table data from API
+  //   axios.get<TableData[]>('https://api.example.com/data') // Replace with your actual API
+  //     .then((response) => {
+  //       setTableData(response.data);
+  //     })
+  //     .catch((error) => console.error("Error fetching data:", error));
+  // }, []);
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      {/* Navbar */}
+      <nav className="bg-gray-800 p-4">
+        <div className="flex items-center justify-between">
+          <div className="text-white text-xl">iirda Partner</div>
+          <Button
+            onClick={() => setIsNavbarOpen(!isNavbarOpen)}
+            className="text-white md:hidden"
+          >
+            ☰
+          </Button>
+          <ul
+            className={cn(
+              "md:flex md:space-x-6 mt-2 md:mt-0 md:space-y-0 space-y-2",
+              isNavbarOpen ? "block" : "hidden"
+            )}
+          >
+            <li>
+              {/* Login Button */}
+              <Button
+                onClick={handleLogin}  // Open modal on click
+                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+              >
+                Login
+              </Button>
+            </li>
+            <li><a href="tel:+91-8304050894" className="text-white">Contact</a></li>
+            <li><a href="/" className="text-white">Exit</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col md:flex-row p-4">
+        {/* Paragraph */}
+        <div className="md:w-1/2 md:order-2 mb-4 md:mb-0">
+          <h2 className="text-xl font-bold">Description</h2>
+          <p className="text-gray-600">
+            This is a small paragraph providing some information about the page content.
+            The table with data is on the left side in larger screens, but it will move below on smaller devices.
+          </p>
+        </div>
+
+        {/* Table */}
+        <div className="md:w-1/2 md:order-1">
+          <h2 className="text-xl font-bold mb-2">Leader Board</h2>
+          <table className="min-w-full bg-white border border-gray-300 text-left">
+            <thead className="bg-gray-200">
+              <tr>
+                <th className="py-2 px-4">Rank</th>
+                <th className="py-2 px-4">Name</th>
+                <th className="py-2 px-4">Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tableData.map((row, index) => (
+                <tr key={index}>
+                  <td className="py-2 px-4 border-t">{index + 1}</td>
+                  <td className="py-2 px-4 border-t">{row.name}</td>
+                  <td className="py-2 px-4 border-t">{row.points}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <LoginModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    </div>
+  );
+}
+
+export default Home;

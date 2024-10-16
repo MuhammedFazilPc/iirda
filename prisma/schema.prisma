@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int      @id @default(autoincrement())
+  name            String
+  mobile          String   @unique
+  whatsApp        String   @unique
+  password        String
+  status          String   @default("pending")
+  createdAt       DateTime @default(now())
+  grade           String   @default("probation")
+  points          Int      @default(0)
+  balance         Int      @default(0)
+  totalProfit     Int      @default(0)
+  totalWithdrawal Int      @default(0)
+  events          Event[] // Relation to the Events table
+}
+
+model Event {
+  id            Int      @id @default(autoincrement())
+  name          String
+  refereeMobile String
+  eventType     String
+  district      String
+  place         String
+  status        String   @default("recieved")
+  points        Int      @default(0)
+  profit        Int      @default(0)
+  userId        Int // Foreign key to the User table
+  user          User     @relation(fields: [userId], references: [id])
+  createdAt     DateTime @default(now())
+}
+
+model Leaderboard {
+  id     Int    @id @default(autoincrement())
+  name   String
+  points Int
+}
